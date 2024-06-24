@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    const reviews = [
+  { productId: 1, category: 'Electronics', rating: 4, comment: 'Great product!' },
+  { productId: 2, category: 'Books', rating: 5, comment: 'Loved it!' },
+  { productId: 3, category: 'Electronics', rating: 3, comment: 'Could be better.' },
+  { productId: 4, category: 'Books', rating: 4, comment: 'A good read.' },
+  { productId: 5, category: 'Clothes', rating: 5, comment: 'Excellent quality!' },
+  { productId: 6, category: 'Clothes', rating: 3, comment: 'Not as expected.' },
+];
+
+const averageRatings = reviews.reduce((acc, review) => {
+  const category = review.category;
+  if (acc[category]) {
+    acc[category].totalRating += review.rating;
+    acc[category].count++;
+  } else {
+    acc[category] = { totalRating: review.rating, count: 1 };
+  }
+  return acc;
+}, {});
+
+for (const category in averageRatings) {
+  const averageRating = averageRatings[category].totalRating / averageRatings[category].count;
+  console.log(Average rating for ${category}: ${averageRating});
+}
+</script>
+</html>
