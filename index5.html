@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    const salesData = [
+  {
+    saleId: 1,
+    productId: 'P001',
+    productName: 'Product A',
+    category: 'Electronics',
+    price: 100,
+    quantity: 2,
+    date: '2022-01-15',
+    customer: 'John Doe',
+  },
+  {
+    saleId: 2,
+    productId: 'P002',
+    productName: 'Product B',
+    category: 'Clothing',
+    price: 50,
+    quantity: 1,
+    date: '2022-02-20',
+    customer: 'Jane Smith',
+  },
+  {
+    saleId: 3,
+    productId: 'P003',
+    productName: 'Product C',
+    category: 'Electronics',
+    price: 200,
+    quantity: 0,
+    date: '2022-03-10',
+    customer: 'Peter Jones',
+  },
+  {
+    saleId: 4,
+    productId: 'P004',
+    productName: 'Product D',
+    category: 'Clothing',
+    price: 75,
+    quantity: 3,
+    date: '2022-04-05',
+    customer: 'Mary Brown',
+  },
+  {
+    saleId: 5,
+    productId: 'P005',
+    productName: 'Product E',
+    category: 'Books',
+    price: 25,
+    quantity: 2,
+    date: '2022-05-12',
+    customer: 'John Doe',
+  },
+  {
+    saleId: 6,
+    productId: 'P006',
+    productName: 'Product F',
+    category: 'Electronics',
+    price: 150,
+    quantity: 1,
+    date: '2022-06-28',
+    customer: 'Jane Smith',
+  },
+  {
+    saleId: 7,
+    productId: 'P007',
+    productName: 'Product G',
+    category: 'Clothing',
+    price: 60,
+    quantity: 2,
+    date: '2022-07-18',
+    customer: 'Peter Jones',
+  },
+  {
+    saleId: 8,
+    productId: 'P008',
+    productName: 'Product H',
+    category: 'Books',
+    price: 30,
+    quantity: 1,
+    date: '2022-08-03',
+    customer: 'Mary Brown',
+  },
+  {
+    saleId: 9,
+    productId: 'P009',
+    productName: 'Product I',
+    category: 'Electronics',
+    price: 120,
+    quantity: 2,
+    date: '2022-09-11',
+    customer: 'John Doe',
+  },
+  {
+    saleId: 10,
+    productId: 'P010',
+    productName: 'Product J',
+    category: 'Clothing',
+    price: 45,
+    quantity: 3,
+    date: '2022-10-25',
+    customer: 'Jane Smith',
+  },
+];
+
+
+const filteredSales = salesData.filter((sale) => sale.quantity > 0);
+
+
+const transformedSales = filteredSales.map((sale) => ({
+  ...sale,
+  totalRevenue: sale.price * sale.quantity,
+  date: new Date(sale.date), // Convert date to JavaScript Date object
+}));
+
+
+const categoryPerformance = {};
+transformedSales.forEach((sale) => {
+  const category = sale.category;
+  if (!categoryPerformance[category]) {
+    categoryPerformance[category] = {
+      totalRevenue: 0,
+      totalQuantity: 0,
+    };
+  }
+  categoryPerformance[category].totalRevenue += sale.totalRevenue;
+  categoryPerformance[category].totalQuantity += sale.quantity;
+});
+
+
+const monthlySalesTrend = {};
+transformedSales.forEach((sale) => {
+  const month = sale.date.getMonth();
+  if (!monthlySalesTrend[month]) {
+    monthlySalesTrend[month] = {
+      totalRevenue: 0,
+    };
+  }
+  monthlySalesTrend[month].totalRevenue += sale.totalRevenue;
+});
+
+
+const customerRevenue = {};
+transformedSales.forEach((sale) => {
+  const customer = sale.customer;
+  if (!customerRevenue[customer]) {
+    customerRevenue[customer] = {
+      totalRevenue: 0,
+      purchases: 0,
+    };
+  }
+  customerRevenue[customer].totalRevenue += sale.totalRevenue;
+  customerRevenue[customer].purchases += 1;
+});
+
+const topCustomers = Object.entries(customerRevenue)
+  .sort((a, b) => b[1].totalRevenue - a[1].totalRevenue)
+  .slice(0, 3)
+  .map(([customer, data]) => ({
+    customer,
+    averagePurchaseValue: data.totalRevenue / data.purchases,
+  }));
+
+
+console.log('Filtered Sales Data:', filteredSales);
+console.log('Transformed Sales Data:', transformedSales);
+console.log('Performance Analysis by Category:', categoryPerformance);
+console.log('Monthly Sales Trend:', monthlySalesTrend);
+console.log('Top Customers:', topCustomers);
+</script>
+</html>
