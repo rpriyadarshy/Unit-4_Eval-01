@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-    
+  
 </body>
 <script>
-    const reviews = [
+  const reviews = [
   { productId: 1, category: 'Electronics', rating: 4, comment: 'Great product!' },
-  { productId: 2, category: 'Books', rating: 5, comment: 'Loved it!' },
+  { productId: 2, category: 'Books', rating: 5, comment: 'Excellent read!' },
   { productId: 3, category: 'Electronics', rating: 3, comment: 'Could be better.' },
-  { productId: 4, category: 'Books', rating: 4, comment: 'A good read.' },
-  { productId: 5, category: 'Clothes', rating: 5, comment: 'Excellent quality!' },
-  { productId: 6, category: 'Clothes', rating: 3, comment: 'Not as expected.' },
+  { productId: 4, category: 'Books', rating: 4, comment: 'Interesting story.' },
+  { productId: 5, category: 'Clothes', rating: 5, comment: 'Amazing quality!' },
+  { productId: 6, category: 'Electronics', rating: 4, comment: 'Works as expected.' },
+  { productId: 7, category: 'Clothes', rating: 3, comment: 'Not as expected.' },
 ];
 
-const averageRatings = reviews.reduce((acc, review) => {
-  const category = review.category;
+const averageRatingByCategory = reviews.reduce((acc, review) => {
+  const { category, rating } = review;
   if (acc[category]) {
-    acc[category].totalRating += review.rating;
-    acc[category].count++;
+    acc[category].push(rating);
   } else {
-    acc[category] = { totalRating: review.rating, count: 1 };
+    acc[category] = [rating];
   }
   return acc;
 }, {});
 
-for (const category in averageRatings) {
-  const averageRating = averageRatings[category].totalRating / averageRatings[category].count;
-  console.log(Average rating for ${category}: ${averageRating});
-}
+const averageRatings = Object.entries(averageRatingByCategory).reduce((acc, [category, ratings]) => {
+  const averageRating = ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+  acc[category] = averageRating;
+  return acc;
+}, {});
+
+console.log(averageRatings); 
 </script>
 </html>
