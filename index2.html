@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function countMediaExtensions(filenames) {
+  const extensionCounts = {};
+
+  filenames.forEach((filename) => {
+    const extension = filename.split('.').pop();
+    if (extensionCounts[extension]) {
+      extensionCounts[extension].count++;
+      extensionCounts[extension].filenames.push(filename);
+    } else {
+      extensionCounts[extension] = {
+        count: 1,
+        filenames: [filename],
+      };
+    }
+  });
+
+  return extensionCounts;
+}
+
+
+const filenames = [
+  'image.jpg',
+  'video.mp4',
+  'audio.wav',
+  'image.png',
+  'image.jpg',
+  'video.mov',
+];
+
+const extensionCounts = countMediaExtensions(filenames);
+console.log(extensionCounts);
+</script>
+</html>
