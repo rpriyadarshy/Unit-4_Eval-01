@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    const movies = [
+    { title: 'Inception', genre: 'Sci-Fi', year: 2010, rating: 8.8, director: 'Christopher Nolan' },
+    { title: 'The Dark Knight', genre: 'Action', year: 2008, rating: 9.0, director: 'Christopher Nolan' },
+    { title: 'Interstellar', genre: 'Sci-Fi', year: 2014, rating: 8.6, director: 'Christopher Nolan' },
+    { title: 'The Matrix', genre: 'Sci-Fi', year: 1999, rating: 8.7, director: 'Lana Wachowski, Lilly Wachowski' },
+    { title: 'Fight Club', genre: 'Drama', year: 1999, rating: 8.8, director: 'David Fincher' },
+    { title: 'Pulp Fiction', genre: 'Crime', year: 1994, rating: 8.9, director: 'Quentin Tarantino' }
+    
+];
+
+const userProfile = {
+    preferredGenres: ['Sci-Fi', 'Action'],
+    minRating: 8.5
+};
+
+
+function getRecommendedMovies(userProfile, movies) {
+    const { preferredGenres, minRating } = userProfile;
+    return movies
+        .filter(movie => preferredGenres.includes(movie.genre) && movie.rating >= minRating)
+        .sort((a, b) => b.rating - a.rating);
+}
+
+
+function calculateAverageRatingByGenre(recommendedMovies) {
+    const genreRatings = recommendedMovies.reduce((acc, movie) => {
+        if (!acc[movie.genre]) {
+            acc[movie.genre] = { totalRating: 0, count: 0 };
+        }
+        acc[movie.genre].totalRating += movie.rating;
+        acc[movie.genre].count += 1;
+        return acc;
+    }, {});
+
+    return Object.keys(genreRatings).map(genre => ({
+        genre,
+        averageRating: genreRatings[genre].totalRating / genreRatings[genre].count
+    })).sort((a, b) => b.averageRating - a.averageRating);
+}
+
+
+function getTopDirectors(recommendedMovies) {
+    const directorRatings = recommendedMovies.reduce((acc, movie) => {
+        if (!acc[movie.director]) {
+            acc[movie.director] = { totalRating: 0, count: 0 };
+        }
+        acc[movie.director].totalRating += movie.rating;
+        acc[movie.director].count += 1;
+        return acc;
+    }, {});
+
+    return Object.keys(directorRatings).map(director => ({
+        director,
+        averageRating: directorRatings[director].totalRating / directorRatings[director].count,
+        highestRatedMovie: recommendedMovies
+            .filter(movie => movie.director === director)
+            .sort((a, b) => b.rating - a.rating)[0]
+    })).sort((a, b) => b.averageRating - a.averageRating).slice(0, 3);
+}
+
+
+function sortMoviesByTitle(movies) {
+    return [...movies].sort((a, b) => a.title.localeCompare(b.title));
+}
+
+
+
+const recommendedMovies = getRecommendedMovies(userProfile, movies);
+console.log('Recommended Movies:', recommendedMovies);
+
+const averageRatingByGenre = calculateAverageRatingByGenre(recommendedMovies);
+console.log('Average Rating by Genre:', averageRatingByGenre);
+
+const topDirectors = getTopDirectors(recommendedMovies);
+console.log('Top Directors:', topDirectors);
+
+const sortedMovies = sortMoviesByTitle(recommendedMovies);
+console.log('Sorted Movies by Title:', sortedMovies);
+
+</script>
+</html>
