@@ -10,31 +10,44 @@
 </body>
 <script>
   const reviews = [
-  { productId: 1, category: 'Electronics', rating: 4, comment: 'Great product!' },
-  { productId: 2, category: 'Books', rating: 5, comment: 'Excellent read!' },
-  { productId: 3, category: 'Electronics', rating: 3, comment: 'Could be better.' },
-  { productId: 4, category: 'Books', rating: 4, comment: 'Interesting story.' },
-  { productId: 5, category: 'Clothes', rating: 5, comment: 'Amazing quality!' },
-  { productId: 6, category: 'Electronics', rating: 4, comment: 'Works as expected.' },
-  { productId: 7, category: 'Clothes', rating: 3, comment: 'Not as expected.' },
+    { productId: 1, category: 'Electronics', rating: 4, comment: 'Great product!' },
+    { productId: 2, category: 'Books', rating: 5, comment: 'Very informative.' },
+    { productId: 3, category: 'Electronics', rating: 3, comment: 'Good value.' },
+    { productId: 4, category: 'Books', rating: 4, comment: 'Well written.' },
+    { productId: 5, category: 'Electronics', rating: 5, comment: 'Excellent quality.' },
+    { productId: 6, category: 'Books', rating: 3, comment: 'Interesting read.' },
 ];
 
-const averageRatingByCategory = reviews.reduce((acc, review) => {
-  const { category, rating } = review;
-  if (acc[category]) {
-    acc[category].push(rating);
-  } else {
-    acc[category] = [rating];
-  }
-  return acc;
-}, {});
+function calculateAverageRatingByCategory(reviews) {
+    
+    const categoryData = reviews.reduce((acc, review) => {
+        const { category, rating } = review;
 
-const averageRatings = Object.entries(averageRatingByCategory).reduce((acc, [category, ratings]) => {
-  const averageRating = ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
-  acc[category] = averageRating;
-  return acc;
-}, {});
+        
+        if (!acc[category]) {
+            acc[category] = { sum: 0, count: 0 };
+        }
 
-console.log(averageRatings); 
+        
+        acc[category].sum += rating;
+        acc[category].count += 1;
+
+        return acc;
+    }, {});
+
+    
+    const averageRatingByCategory = Object.keys(categoryData).reduce((acc, category) => {
+        acc[category] = categoryData[category].sum / categoryData[category].count;
+        return acc;
+    }, {});
+
+    return averageRatingByCategory;
+}
+
+
+const averageRatings = calculateAverageRatingByCategory(reviews);
+console.log(averageRatings);
+
+
 </script>
 </html>
