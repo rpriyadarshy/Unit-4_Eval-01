@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+   
+const books = [
+  { title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925, genre: "Fiction", rating: 4.2 },
+  { title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, genre: "Fiction", rating: 4.8 },
+  { title: "1984", author: "George Orwell", year: 1949, genre: "Dystopian", rating: 4.4 },
+  { title: "A Brief History of Time", author: "Stephen Hawking", year: 1988, genre: "Science", rating: 4.1 }
+];
+
+const newBook = { title: "The Road", author: "Cormac McCarthy", year: 2006, genre: "Post-Apocalyptic", rating: 4.3 };
+
+const bookUpdates = { year: 2007, rating: 4.5 };
+
+const searchQuery = "mockingbird";
+
+const genreFilter = "Fiction";
+
+const ratingThreshold = 4.3;
+
+
+
+
+function addBook(book) {
+  books.push(book);
+}
+
+
+function removeBookByTitle(title) {
+  const index = books.findIndex(book => book.title.toLowerCase() === title.toLowerCase());
+  if (index !== -1) {
+    books.splice(index, 1);
+  }
+}
+
+
+function updateBook(title, updates) {
+  const book = books.find(book => book.title.toLowerCase() === title.toLowerCase());
+  if (book) {
+    Object.assign(book, updates);
+  }
+}
+
+
+function searchBooks(query) {
+  return books.filter(book => 
+    book.title.toLowerCase().includes(query.toLowerCase()) ||
+    book.author.toLowerCase().includes(query.toLowerCase())
+  );
+}
+
+
+function filterBooksByGenre(genre) {
+  return books.filter(book => book.genre.toLowerCase() === genre.toLowerCase());
+}
+
+
+function sortBooks(sortBy, order = "asc") {
+  const sortKey = sortBy.toLowerCase();
+  const compareFn = (a, b) => {
+    if (order === "asc") {
+      return a[sortKey] > b[sortKey] ? 1 : -1;
+    } else {
+      return a[sortKey] < b[sortKey] ? 1 : -1;
+    }
+  };
+  return books.sort(compareFn);
+}
+
+
+function listBooksAboveRating(threshold) {
+  return books.filter(book => book.rating > threshold);
+}
+
+
+function calculateAverageRating() {
+  const totalRating = books.reduce((sum, book) => sum + book.rating, 0);
+  return totalRating / books.length;
+}
+
+
+addBook({ title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1954, genre: "Fantasy", rating: 4.8 });
+removeBookByTitle("To Kill a Mockingbird");
+updateBook("The Lord of the Rings", { rating: 4.9 });
+const searchResults = searchBooks("lord");
+const filteredBooks = filterBooksByGenre("Fantasy");
+const sortedBooks = sortBooks("year", "desc");
+const highRatedBooks = listBooksAboveRating(4.5);
+const averageRating = calculateAverageRating();
+
+console.log(books); 
+console.log(searchResults);
+console.log(filteredBooks);
+console.log(sortedBooks);
+console.log(highRatedBooks);
+console.log(`Average Rating: ${averageRating}`);
+</script>
+</html>
